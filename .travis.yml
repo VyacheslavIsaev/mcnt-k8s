@@ -1,0 +1,29 @@
+sudo: required
+services:
+    - docker
+
+#before_install:
+
+script:
+    #after_success:
+    - docker build -t $DOCKER_ID/mcnt-uix ./uix
+    - docker build -t $DOCKER_ID/mcnt-api ./api
+    - docker build -t $DOCKER_ID/mcnt-nginx ./nginx
+    - docker build -t $DOCKER_ID/mcnt-worker ./worker
+    - echo "$DOCKER_PASSWD" | docker login -u "$DOCKER_ID" --password-stdin
+    - docker push $DOCKER_ID/mcnt-uix
+    - docker push $DOCKER_ID/mcnt-api
+    - docker push $DOCKER_ID/mcnt-nginx
+    - docker push $DOCKER_ID/mcnt-worker
+
+deploy:
+    provider: elasticbeanstalk
+    region: us-east-2
+    app: mcnt
+    env: Mcnt-env
+    bucket_name: elasticbeanstalk-us-east-2-015560362832
+    bucket_path: mcnt
+    on:
+        branch: master    
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_KEY
