@@ -1,26 +1,32 @@
 #!/bin/bash
 
-# Declare an array of images
+##
+## Declare an array of images
 export PROJ=mcnt
 declare -a StringArray=("uix" "api" "worker")
 
 echo "$DOCKER_PASSWD" | docker login -u "$DOCKER_ID" --password-stdin
 
-# Iterate the string array using for loop
+##
+## Iterate the string array using for loop
+echo "Building production images..."
 for val in ${StringArray[@]}; do
+    echo "Building production image for: "$val
     export img_name=$DOCKER_ID/$PROJ-$val
     docker build -t $img_name:latest -t $img_name:$VER_TAG ./$val
+    echo "Pushing latest image for: "$val
     docker push $img_name:latest
+    echo "Pushing image: "$val":"$VER_TAG
     docker push $img_name:$VER_TAG
 done
 
 ##
-## Deploying to kubectl
+echo "Deploying to kube..."
 ##
 #kubectl apply -f k8s
 
 ##
-## Applying latest version to containers 
+echo "Applying latest version to containers..."
 ##
 #for val in ${StringArray[@]}; do
 #    export img_name=$DOCKER_ID/$PROJ-$val
