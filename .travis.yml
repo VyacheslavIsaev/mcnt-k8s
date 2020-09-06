@@ -22,7 +22,7 @@ before_install:
 
 script:
     - echo "Script section"
-    - docker run $DOCKER_ID/uix-test npm test -- --coverage
+    - docker run -e CI=true $DOCKER_ID/uix-test npm test
 
 deploy:
     provider: script
