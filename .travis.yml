@@ -6,19 +6,23 @@ env:
         - VER_TAG=$(git rev-parse --short=12  HEAD)
         - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 
-#before_install:
+before_install:
     # Downloading gcloud package
-    # curl https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz > ./google-cloud-sdk.tar.gz
-    # mkdir -p ./gcloud 
-    # tar -C ./gcloud -xvf ./google-cloud-sdk.tar.gz
-    # ./gcloud/google-cloud-sdk/install.sh -q
-    # source ./gcloud/google-cloud-sdk/path.bash.inc
-    # source /usr/lib/google-cloud-sdk/path.bash.inc
-    # gcloud components install kubectl --quiet
-#     gcloud auth activate-service-account --key-file service-account.json
-#     gcloud config set project $GC_PROJECT_ID
-#     gcloud config set compute/zone $GC_COMPUTE_ZONE
-#     gcloud container clusters get-credentials $GC_K8S_CLUSTER
+    - curl https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz > ./google-cloud-sdk.tar.gz
+    - mkdir -p ./gcloud 
+    - tar -C ./gcloud -xvf ./google-cloud-sdk.tar.gz
+    - ./gcloud/google-cloud-sdk/install.sh
+    - source ./gcloud/google-cloud-sdk/path.bash.inc
+    - gcloud components install kubectl --quiet
+    #     gcloud auth activate-service-account --key-file service-account.json
+    #     gcloud config set project $GC_PROJECT_ID
+    #     gcloud config set compute/zone $GC_COMPUTE_ZONE
+    #     gcloud container clusters get-credentials $GC_K8S_CLUSTER
+    - docker build -t $DOCKER_ID/uix-test -f ./uix/Dockerfile.dev ./uix
+
+script:
+    - echo "Script section"
+    - docker run $DOCKER_ID/uix-test npm test -- --coverage
 
 deploy:
     provider: script
