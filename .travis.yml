@@ -3,8 +3,12 @@ services:
     - docker
 
 before_install:
-    - curl https://sdk.cloud.google.com | bash > /dev/null;
-    - source $HOME/google-cloud-sdk/path.bash.inc
+    # Downloading gcloud package
+    - curl https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz > ./google-cloud-sdk.tar.gz
+    - mkdir -p ./gcloud 
+    - tar -C ./gcloud -xvf ./google-cloud-sdk.tar.gz
+    - ./gcloud/google-cloud-sdk/install.sh -q
+    - source ./gcloud/google-cloud-sdk/path.bash.inc
     - gcloud components update kubectl
     - gcloud auth activate-service-account --key-file service-account.json
 
