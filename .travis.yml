@@ -10,10 +10,10 @@ before_install:
     - ./gcloud/google-cloud-sdk/install.sh -q
     - source ./gcloud/google-cloud-sdk/path.bash.inc
     - gcloud components update kubectl --quiet
-#    - gcloud auth activate-service-account --key-file service-account.json
-#    - gcloud config set project $GC_PROJECT_ID
-#    - gcloud config set compute/zone $GC_COMPUTE_ZONE
-#    - gcloud container clusters get-credentials $GC_K8S_CLUSTER
+#     gcloud auth activate-service-account --key-file service-account.json
+#     gcloud config set project $GC_PROJECT_ID
+#     gcloud config set compute/zone $GC_COMPUTE_ZONE
+#     gcloud container clusters get-credentials $GC_K8S_CLUSTER
 
 deploy:
     provider: script
