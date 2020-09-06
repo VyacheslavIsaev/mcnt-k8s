@@ -1,7 +1,10 @@
 sudo: required
 services:
     - docker
-
+env:
+    global:
+        - VER_TAG=$(git rev-parse --short=12  HEAD)
+        - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 before_install:
     # Downloading gcloud package
     # curl https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz > ./google-cloud-sdk.tar.gz
@@ -9,9 +12,8 @@ before_install:
     # tar -C ./gcloud -xvf ./google-cloud-sdk.tar.gz
     # ./gcloud/google-cloud-sdk/install.sh -q
     # source ./gcloud/google-cloud-sdk/path.bash.inc
-    - ls -la /usr/lib    
     # source /usr/lib/google-cloud-sdk/path.bash.inc
-    - gcloud components install kubectl --quiet
+    # gcloud components install kubectl --quiet
 #     gcloud auth activate-service-account --key-file service-account.json
 #     gcloud config set project $GC_PROJECT_ID
 #     gcloud config set compute/zone $GC_COMPUTE_ZONE
